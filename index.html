@@ -9,32 +9,39 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     min-height:100vh;display:flex;align-items:center;justify-content:center;
-    font-family:'Quicksand',sans-serif;overflow:hidden;
+    font-family:'Quicksand',sans-serif;overflow-x:hidden;padding:24px 0;
     background:linear-gradient(135deg,#ffd6e8 0%,#ffc2d1 35%,#e4c1f9 70%,#cdb4db 100%);
     background-size:300% 300%;animation:bg 14s ease infinite;color:#5a2a4a;
   }
   @keyframes bg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .wrap{position:relative;z-index:2;width:min(95vw,1200px);text-align:center}
+  h1{font-family:'Dancing Script',cursive;font-size:clamp(2.6rem,9vw,3.6rem);color:#d6336c;margin-bottom:4px}
+  .sub{font-size:.95rem;opacity:.75;margin-bottom:24px}
+  .panels{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.panels{grid-template-columns:1fr}}
   .card{
-    position:relative;z-index:2;width:min(92vw,560px);padding:44px 32px 36px;text-align:center;
+    display:flex;flex-direction:column;align-items:center;padding:28px 24px 24px;
     background:rgba(255,255,255,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     border:1px solid rgba(255,255,255,.7);border-radius:28px;
-    box-shadow:0 20px 60px rgba(160,60,120,.25);
+    box-shadow:0 20px 60px rgba(160,60,120,.22);
   }
-  h1{font-family:'Dancing Script',cursive;font-size:clamp(2.6rem,9vw,3.6rem);color:#d6336c;margin-bottom:6px}
-  .sub{font-size:.95rem;opacity:.75;margin-bottom:28px}
-  .msg-box{min-height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:28px}
-  #msg{font-size:clamp(1.15rem,4.5vw,1.45rem);line-height:1.5;font-weight:700;transition:opacity .35s,transform .35s}
-  #msg.hide{opacity:0;transform:translateY(10px) scale(.97)}
-  #emoji{font-size:2.2rem;display:block;margin-bottom:10px}
+  .card h2{font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-bottom:8px}
+  .msg-box{min-height:190px;flex:1;display:flex;align-items:center;justify-content:center;margin-bottom:20px;width:100%}
+  .msg{font-size:clamp(1.1rem,4vw,1.3rem);line-height:1.5;font-weight:700;transition:opacity .35s,transform .35s}
+  .msg.hide{opacity:0;transform:translateY(10px) scale(.97)}
+  .emoji{font-size:2rem;display:block;margin-bottom:10px}
+  .src{display:block;margin-top:10px;font-size:.85rem;font-weight:500;opacity:.65}
   button{
-    font-family:inherit;font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;
-    padding:16px 34px;border:none;border-radius:999px;
+    font-family:inherit;font-weight:700;font-size:1.05rem;color:#fff;cursor:pointer;
+    padding:15px 28px;border:none;border-radius:999px;
     background:linear-gradient(135deg,#ff6b9d,#c44569);
     box-shadow:0 8px 22px rgba(196,69,105,.4);transition:transform .15s,box-shadow .15s;
   }
-  button:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 28px rgba(196,69,105,.5)}
+  button.gold{background:linear-gradient(135deg,#e0a458,#b5793a);box-shadow:0 8px 22px rgba(181,121,58,.4)}
+  button.alt{background:linear-gradient(135deg,#b07cf0,#7b4fc4);box-shadow:0 8px 22px rgba(123,79,196,.4)}
+  button:hover{transform:translateY(-2px) scale(1.03)}
   button:active{transform:scale(.96)}
-  .count{margin-top:18px;font-size:.85rem;opacity:.6}
+  .count{margin-top:14px;font-size:.8rem;opacity:.6;min-height:1em}
   .heart{position:fixed;z-index:1;pointer-events:none;animation:float linear forwards;user-select:none}
   @keyframes float{
     0%{transform:translateY(0) rotate(0);opacity:1}
@@ -43,14 +50,29 @@
 </style>
 </head>
 <body>
-<div class="card">
+<div class="wrap">
   <h1>Hey Rina ✨</h1>
-  <p class="sub">Drück auf den Knopf, da wartet was Schönes auf dich</p>
-  <div class="msg-box">
-    <div id="msg"><span id="emoji">💌</span><span id="text">Bereit für ein bisschen gute Laune?</span></div>
+  <p class="sub">Drück auf einen Knopf, da wartet was Schönes auf dich</p>
+  <div class="panels">
+    <div class="card">
+      <h2>💖 Kompliment</h2>
+      <div class="msg-box"><div class="msg" id="cMsg"><span class="emoji" id="cEmoji">💌</span><span id="cText">Bereit für ein bisschen gute Laune?</span></div></div>
+      <button id="cBtn">Gib mir ein Kompliment</button>
+      <div class="count" id="cCount"></div>
+    </div>
+    <div class="card">
+      <h2>✨ Motivation</h2>
+      <div class="msg-box"><div class="msg" id="mMsg"><span class="emoji" id="mEmoji">🌟</span><span id="mText">Ein bisschen Power für deinen Tag?</span></div></div>
+      <button id="mBtn" class="alt">Gib mir Motivation</button>
+      <div class="count" id="mCount"></div>
+    </div>
+    <div class="card">
+      <h2>🌙 Quran</h2>
+      <div class="msg-box"><div class="msg" id="qMsg"><span class="emoji" id="qEmoji">📖</span><span id="qText">Ein schöner Vers für dein Herz?</span><span class="src" id="qSrc"></span></div></div>
+      <button id="qBtn" class="gold">Gib mir einen Vers</button>
+      <div class="count" id="qCount"></div>
+    </div>
   </div>
-  <button id="btn">Gib mir ein Kompliment 💖</button>
-  <div class="count" id="count"></div>
 </div>
 
 <script>
@@ -626,44 +648,85 @@ const openers = [
 
 const emojis = ["🌸","✨","💖","🌷","🦋","🌙","☀️","💫","🌺","👑","🌈","💪","🌻","💕","⭐","🍓","🎀","🔥","🌊","🕊️","💎","🌼","🚀","🫶","🌟","🍀","🎶","🌅","💐","🥰","🍒","🧁","🌞","🌿","🍯","🎈","🪷","☕","💗","😊"];
 
-function lowerFirst(s){ return s.startsWith("Rina") ? s : s.charAt(0).toLowerCase() + s.slice(1); }
-
-// Jeder Basis-Spruch hat Varianten: zuerst pur, danach mit Einleitungen
-const bases = [
-  ...compliments.map(c => [c, ...openers.map(o => o + " " + lowerFirst(c))]),
-  ...quotes.map(q => [q])
+// Quran-Verse (sinngemässe deutsche Übersetzung)
+const quran = [
+["Wahrlich, mit der Erschwernis kommt Erleichterung.","Sure 94:5"],
+["Allah erlegt keiner Seele mehr auf, als sie zu tragen vermag.","Sure 2:286"],
+["Wahrlich, Allah ist mit den Geduldigen.","Sure 2:153"],
+["Wahrlich, im Gedenken Allahs finden die Herzen Ruhe.","Sure 13:28"],
+["Und wer auf Allah vertraut, dem ist Er genug.","Sure 65:3"],
+["Verzweifelt nicht an der Barmherzigkeit Allahs.","Sure 39:53"],
+["Und wenn Meine Diener dich nach Mir fragen: Ich bin nahe.","Sure 2:186"],
+["Sei nicht traurig, Allah ist mit uns.","Sure 9:40"],
+["Und gebt die Hoffnung auf Allahs Gnade nicht auf.","Sure 12:87"],
+["Vielleicht ist euch etwas zuwider, und es ist gut für euch.","Sure 2:216"],
+["Ruft Mich an, so erhöre Ich euch.","Sure 40:60"],
+["Dein Herr hat dich nicht verlassen.","Sure 93:3"],
+["Und dein Herr wird dir geben, und du wirst zufrieden sein.","Sure 93:5"],
+["Und Allah ist der beste Planer.","Sure 8:30"],
+["Allah genügt uns, und Er ist der beste Beschützer.","Sure 3:173"],
+["Sucht Hilfe in Geduld und Gebet.","Sure 2:45"],
+["Fürchtet euch nicht, Ich bin mit euch, Ich höre und sehe.","Sure 20:46"],
+["Wir sind ihm näher als seine Halsschlagader.","Sure 50:16"],
+["Gedenkt Meiner, so gedenke Ich eurer.","Sure 2:152"],
+["Wenn ihr dankbar seid, werde Ich euch gewiss noch mehr geben.","Sure 14:7"],
+["Und sei geduldig, denn Allah lässt den Lohn derer, die Gutes tun, nicht verloren gehen.","Sure 11:115"],
+["Allah liebt diejenigen, die Gutes tun.","Sure 2:195"],
+["Allah liebt diejenigen, die auf Ihn vertrauen.","Sure 3:159"],
+["Erwidere das Schlechte mit etwas Besserem.","Sure 41:34"],
+["Wir haben den Menschen in schönster Gestalt erschaffen.","Sure 95:4"],
+["Er ist mit euch, wo immer ihr seid.","Sure 57:4"],
+["Mein Herr, ich bin bedürftig nach dem Guten, das Du mir herabsendest.","Sure 28:24"],
+["Mein Herr, weite mir meine Brust und mach mir meine Aufgabe leicht.","Sure 20:25–26"],
+["Mein Herr, mehre mir mein Wissen.","Sure 20:114"],
+["Unser Herr, gib uns Gutes im Diesseits und Gutes im Jenseits.","Sure 2:201"],
+["Allah ändert nichts an der Lage von Menschen, bis sie das ändern, was in ihnen selbst ist.","Sure 13:11"],
+["Dem Menschen wird nur das zuteil, worum er sich bemüht.","Sure 53:39"],
+["Wer Allah fürchtet, dem schafft Er einen Ausweg und versorgt ihn, von wo er es nicht erwartet.","Sure 65:2–3"],
+["Allah wird nach Erschwernis Erleichterung schaffen.","Sure 65:7"],
+["Allahs Barmherzigkeit ist denen nahe, die Gutes tun.","Sure 7:56"],
+["Meine Barmherzigkeit umfasst alle Dinge.","Sure 7:156"],
+["Allah will für euch Erleichterung und nicht Erschwernis.","Sure 2:185"],
+["Wahrlich, den Geduldigen wird ihr Lohn ohne Mass gegeben.","Sure 39:10"],
+["Sie sollen verzeihen und nachsichtig sein. Liebt ihr es nicht, dass Allah euch vergibt?","Sure 24:22"],
+["Welche der Wohltaten eures Herrn wollt ihr denn leugnen?","Sure 55:13"],
+["Und Allah ist der Beste der Versorger.","Sure 62:11"],
+["Und Er ist mit euch, und Allah sieht, was ihr tut.","Sure 57:4"],
+["Und wer Gutes tut im Gewicht eines Stäubchens, wird es sehen.","Sure 99:7"],
+["Wahrlich, Allah ist allvergebend und barmherzig.","Sure 2:173"],
+["Und das Jenseits ist besser für dich als das Diesseits.","Sure 93:4"],
+["Unser Herr, lass unsere Herzen nicht abschweifen, nachdem Du uns rechtgeleitet hast.","Sure 3:8"]
 ];
-const total = bases.reduce((n,b)=>n+b.length,0);
-const used = bases.map(()=>0);
 
-let pool = [], round = 0, shown = 0;
-function refill(){
-  pool = bases.map((_,i)=>i).filter(i => used[i] < bases[i].length);
-  if(!pool.length){ used.fill(0); pool = bases.map((_,i)=>i); }
-  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
-}
-function next(){
-  if(!pool.length) refill();
-  const i = pool.pop();
-  const variants = bases[i];
-  // ab der zweiten Runde zufällige, noch nicht benutzte Einleitung
-  const t = variants[used[i]++];
-  return t;
-}
-// Varianten (ausser der ersten) mischen, damit die Einleitungen zufällig kommen
-bases.forEach(v => { for(let k=v.length-1;k>1;k--){const j=1+Math.floor(Math.random()*k);[v[k],v[j]]=[v[j],v[k]];} });
+function lowerFirst(s){ return s.startsWith("Rina") ? s : s.charAt(0).toLowerCase() + s.slice(1); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
 
-const msg = document.getElementById('msg'),
-      emoji = document.getElementById('emoji'),
-      text = document.getElementById('text'),
-      count = document.getElementById('count');
+// --- Komplimente: erst jeder Satz pur, dann mit Einleitungen ---
+const cBases = compliments.map(c => [c, ...shuffle(openers.map(o => o + " " + lowerFirst(c)))]);
+const cTotal = cBases.reduce((n,b)=>n+b.length,0);
+const cUsed = cBases.map(()=>0);
+let cPool = [], cShown = 0;
+function nextCompliment(){
+  if(!cPool.length){
+    cPool = shuffle(cBases.map((_,i)=>i).filter(i => cUsed[i] < cBases[i].length));
+    if(!cPool.length){ cUsed.fill(0); cPool = shuffle(cBases.map((_,i)=>i)); }
+  }
+  const i = cPool.pop();
+  return cBases[i][cUsed[i]++];
+}
+
+// --- Motivation & Quran: keine Wiederholung, bis alle durch sind ---
+let mPool = [], qPool = [], mShown = 0, qShown = 0;
+function nextMotivation(){ if(!mPool.length) mPool = shuffle(quotes.slice()); return mPool.pop(); }
+function nextVerse(){ if(!qPool.length) qPool = shuffle(quran.slice()); return qPool.pop(); }
 
 function hearts(n=14){
   const sym=["💖","💕","💗","✨","🌸","💞"];
   for(let i=0;i<n;i++){
     const h=document.createElement('span');
     h.className='heart';
-    h.textContent=sym[Math.floor(Math.random()*sym.length)];
+    h.textContent=pick(sym);
     h.style.left=Math.random()*100+'vw';
     h.style.top=(80+Math.random()*25)+'vh';
     h.style.fontSize=(16+Math.random()*22)+'px';
@@ -675,16 +738,41 @@ function hearts(n=14){
   }
 }
 
-document.getElementById('btn').addEventListener('click',()=>{
-  msg.classList.add('hide');
+const $ = id => document.getElementById(id);
+$('cBtn').addEventListener('click',()=>{
+  $('cMsg').classList.add('hide');
   setTimeout(()=>{
-    emoji.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    text.textContent = next();
-    msg.classList.remove('hide');
-    shown++;
-    count.textContent = shown + ' von über ' + Math.floor(total/100)*100 + ' Sprüchen 💗';
+    $('cEmoji').textContent = pick(emojis);
+    $('cText').textContent = nextCompliment();
+    $('cMsg').classList.remove('hide');
+    cShown++;
+    $('cCount').textContent = cShown + ' von über ' + Math.floor(cTotal/100)*100 + ' Komplimenten 💗';
   },300);
   hearts();
+});
+$('mBtn').addEventListener('click',()=>{
+  $('mMsg').classList.add('hide');
+  setTimeout(()=>{
+    $('mEmoji').textContent = pick(emojis);
+    $('mText').textContent = nextMotivation();
+    $('mMsg').classList.remove('hide');
+    mShown++;
+    $('mCount').textContent = mShown + ' von ' + quotes.length + ' Sprüchen ✨';
+  },300);
+  hearts(8);
+});
+$('qBtn').addEventListener('click',()=>{
+  $('qMsg').classList.add('hide');
+  setTimeout(()=>{
+    const [t,src] = nextVerse();
+    $('qEmoji').textContent = pick(["🌙","🤲","📖","✨","🕊️","💫"]);
+    $('qText').textContent = "„" + t + "“";
+    $('qSrc').textContent = "Quran, " + src;
+    $('qMsg').classList.remove('hide');
+    qShown++;
+    $('qCount').textContent = qShown + ' von ' + quran.length + ' Versen 🌙';
+  },300);
+  hearts(8);
 });
 </script>
 </body>
